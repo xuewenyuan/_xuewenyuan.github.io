@@ -1,0 +1,237 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description"><title>Neural Networks(Part 1) | Wenyuan</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/6.0.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.2/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.2/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">Neural Networks(Part 1)</h1><a id="logo" href="/.">Wenyuan</a><p class="description">Wenyuan Xue's Blog</p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a></div></div><div id="layout" class="pure-g"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">Neural Networks(Part 1)</h1><div class="post-meta">Jul 14, 2016<span> | </span><span class="category"><a href="/categories/Neural-Networks/">Neural Networks</a></span><script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> 阅读</span></span></div><a href="/2016/07/14/Neural-Networks-1/#comments" class="ds-thread-count cloud-tie-join-count"><span style="font-size: 15px; color: #6E7173;" class="join-count">0</span><span> 条参与</span></a><div class="post-content"><h2 id=""><a href="#" class="headerlink" title=""></a><a id="more"></a></h2><p><strong>This is an original article. Please indicate reference if reproduced.</strong></p>
+<h2 id="Outline"><a href="#Outline" class="headerlink" title="Outline"></a>Outline</h2><p>Deep Learning is so popular that have shown great promise in CV and NLP tasks. As a student majoring in this area, I had a series of presentation to explain some concepts at my Lab. Now I summarize them in this specialization on my page, hoping to give graduate students a tutorial to understand how neural networks work.<br>There are four parts in this specialization, which cover the following:</p>
+<ol>
+<li>Perceptron, Multilayer Perceptron, BackPropagation</li>
+<li>Convolution Neural Networks</li>
+<li>Autoencoder</li>
+<li>Recurrent Neural Networks</li>
+</ol>
+<h2 id="History"><a href="#History" class="headerlink" title="History"></a>History</h2><p>Neural Networks are some algorithms that try to mimic human brain. There have been three waves of development of neural networks.</p>
+<ul>
+<li>Cybernetics(人际关系), 1940s-1960s.(Biological Learning, Perceptron)</li>
+<li>Connectionism(连接机制), 1980s-1990s.(BackPropagation)</li>
+<li>Deep Learning(深度学习), since 2006.(Deep Belief Networks)  </li>
+</ul>
+<p>For more details, you could be read chapter 1 of [1] <a href="http://www.deeplearningbook.org/" target="_blank" rel="external">Deep Learning, Yoshua Bengio, Ian Goodfellow, Aaron Courville, MIT Press, In preparation</a>.  </p>
+<p>Let’s see the real stuff!</p>
+<h2 id="Perceptron"><a href="#Perceptron" class="headerlink" title="Perceptron"></a>Perceptron</h2><p>The <a href="https://en.wikipedia.org/wiki/Perceptron" target="_blank" rel="external">perceptron algorithm</a> was invented in 1957 at the Cornell Aeronautical Laboratory by Frank Rosenblatt，which can be trained for binary classification problem.  </p>
+<div align="center"><br><img src="http://ww3.sinaimg.cn/large/535663c3gw1f5tfi7913sj20vl0fqt9n.jpg" width="474" height="236" alt="An example for binary classification problem" align="center"><br></div>
+
+
+<h3 id="Structure"><a href="#Structure" class="headerlink" title="Structure"></a>Structure</h3><p>The structure of perceptron is very simple. Input is an n-dimension vector X. An weight is set for each X[i]. The bias unit is necessary. If you set X[0] equal 1, then the number of W[0] represents bias. So we can use matrix operation calculate the sum for all X[i] * W[i]. Finally the prediction can be got by activation function(sigmoid, tanh, ReLU).  </p>
+<p><img src="http://ww3.sinaimg.cn/large/535663c3gw1f5tg6elbr0j21dc0hk774.jpg" alt="The structure of perceptron">  </p>
+<h3 id="Example-AND-OR"><a href="#Example-AND-OR" class="headerlink" title="Example:AND, OR"></a>Example:AND, OR</h3><p>Now, let’s see two examples about AND, OR operation. This part will help you understand how perceptron works.<br>Suppose $x_1,x_2\in{(0,1)}$, $g()=sign()$,and an AND operation can be represented using perceptron as following:  </p>
+<div align="center"><br><img src="http://ww1.sinaimg.cn/large/535663c3gw1f5tgnpp25gj20k1095aam.jpg" width="300" height="140" alt="AND Operation" align="center"><br></div>
+
+<table>
+<thead>
+<tr>
+<th style="text-align:center">$x_1$</th>
+<th style="text-align:center">$x_2$</th>
+<th style="text-align:center">$XW^T$</th>
+<th style="text-align:center">$ \hat{y} $</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">-30</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">-10</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">-10</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">10</td>
+<td style="text-align:center">1</td>
+</tr>
+</tbody>
+</table>
+<p>Then an OR operation can be represented as following:</p>
+<div align="center"><br><img src="http://ww4.sinaimg.cn/large/535663c3gw1f5th1btg93j20k1095dgd.jpg" width="300" height="140" alt="OR Operation" align="center"><br></div>
+
+<table>
+<thead>
+<tr>
+<th style="text-align:center">$x_1$</th>
+<th style="text-align:center">$x_2$</th>
+<th style="text-align:center">$XW^T$</th>
+<th style="text-align:center">$\hat{y}$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">-10</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">10</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">10</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">30</td>
+<td style="text-align:center">1</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Cost-Function"><a href="#Cost-Function" class="headerlink" title="Cost Function"></a>Cost Function</h3><p>Cost function can return a number representing how well the neural network performed to map training examples to correct output. An easy way is to calculate the sum of all point that predict incorrectly:  </p>
+<p>$$ J(W)=\frac{1}{N}\sum_{i=0}^N(y_i \neq \hat{y}_i) $$  </p>
+<p>Unfortunately, this function is not a continuous function, which can not be optimized. Instead, we use following function:  </p>
+<p>$$ J(W)=\frac{1}{N}\sum_{i=0}^Nmax(0,-y_i(XW^T)) $$  </p>
+<p>When the prediction is correct, $XW^T&gt;0$, so $max(0,-y_i(XW^T)=0$; if the prediction is incorrect, $XW^T&lt;0$, so $max(0,-y_i(XW^T)=-y_i(XW^T)$. Obviously, this function is continuous, and only the points predicting incorrectly are calculated. We can rewrite the function as following:  </p>
+<p>$$ J(W)=\frac{1}{N}\sum_{i\in{WrongSamples}}^N(-y_i(XW^T)) $$</p>
+<h3 id="How-is-perceptron-trained"><a href="#How-is-perceptron-trained" class="headerlink" title="How is perceptron trained"></a>How is perceptron trained</h3><p>Gradient descent algorithm is used to update W. For each misclassified example i, repeat:  </p>
+<p>$$ \frac{\partial J_i(W)}{\partial W_j}=-y_ix_{i,j} $$  </p>
+<p>$$ W_j=W_j+\eta y_ix_{i,j} $$  </p>
+<h2 id="Multilayer-Perceptron"><a href="#Multilayer-Perceptron" class="headerlink" title="Multilayer Perceptron"></a>Multilayer Perceptron</h2><p>The perceptron only works for linearly separable data. In more complex case, e.g. XOR or XNOR, the perceptron will fail to separate classes correctly.</p>
+<div align="center"><br><img src="http://ww2.sinaimg.cn/large/535663c3gw1f5zhbh8y1kj20ma0gdt96.jpg" width="300" height="220" alt="OR Operation" align="center"><br></div>
+
+<h3 id="Structure-1"><a href="#Structure-1" class="headerlink" title="Structure"></a>Structure</h3><p>The structure of multilayer perceptron is similar with perceptron. The only difference is there are more hidden layers between input layer and output layer in multilayer perceptron. Given following definition:   </p>
+<ul>
+<li>$a_i^{(j)} =$ “activation” of unit i in layer j</li>
+<li>$w^{(j)} =$ matrix of weights controlling function. Mapping from layer j to layer j+1, if network has $S_j$ units in layer j, $S_{j+1}$ units in layer j+1, then $w^{(j)}$ will be of dimension $S_{j+1} \times (S_{j}+1)$</li>
+</ul>
+<p>Suppose we have a multilayer perceptron as following:</p>
+<div align="center"><br><img src="http://ww4.sinaimg.cn/large/535663c3gw1f5zg84ebj0j20z20fmacn.jpg" width="500" height="220" alt="Multilayer Perceptron" align="center"><br></div>
+
+<p>Then we will get following relation:<br>$$a_1^{(2)} = g(w_{10}^{(1)}x_0+w_{11}^{(1)}x_1+w_{12}^{(1)}x_2+w_{13}^{(1)}x_3)$$<br>$$a_2^{(2)} = g(w_{20}^{(1)}x_0+w_{21}^{(1)}x_1+w_{22}^{(1)}x_2+w_{23}^{(1)}x_3)$$<br>$$a_3^{(2)} = g(w_{30}^{(1)}x_0+w_{31}^{(1)}x_1+w_{32}^{(1)}x_2+w_{33}^{(1)}x_3)$$<br>$$\hat{y} = a_1^{(3)} = g(w_{10}^{(2)}x_0+w_{11}^{(2)}x_1+w_{12}^{(2)}x_2+w_{13}^{(2)}x_3)$$</p>
+<h3 id="Example-XNOR"><a href="#Example-XNOR" class="headerlink" title="Example: XNOR"></a>Example: XNOR</h3><p>Suppose $x_1,x_2\in{(0,1)}$, $y = x_1 XNOR x_2 = (NOTx_1)AND(NOTx_2)$,then an XNOR operation can be represented using perceptron as following:</p>
+<div align="center"><br><img src="http://ww3.sinaimg.cn/large/535663c3gw1f5zgfrh5omj20ss0953zp.jpg" width="400" height="130" alt="XNOR Operation" align="center"><br></div>
+
+<table>
+<thead>
+<tr>
+<th style="text-align:center">———</th>
+<th style="text-align:center">$w^{(1)}$</th>
+<th style="text-align:center">———</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">-30</td>
+<td style="text-align:center">20</td>
+<td style="text-align:center">20</td>
+</tr>
+<tr>
+<td style="text-align:center">10</td>
+<td style="text-align:center">-20</td>
+<td style="text-align:center">-20</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">———</th>
+<th style="text-align:center">$w^{(2)}$</th>
+<th style="text-align:center">———</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">-10</td>
+<td style="text-align:center">20</td>
+<td style="text-align:center">20</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">$x_1$</th>
+<th style="text-align:center">$x_2$</th>
+<th style="text-align:center">$a_1^{(2)}$</th>
+<th style="text-align:center">$a_2^{(2)}$</th>
+<th style="text-align:center">$\hat{y}$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+</tr>
+</tbody>
+</table>
+<h3 id="BackPropagation-Algorithm"><a href="#BackPropagation-Algorithm" class="headerlink" title="BackPropagation Algorithm"></a>BackPropagation Algorithm</h3><div align="center"><br><img src="http://i2.piimg.com/4851/d559d2de0549340b.png" width="460" height="300" align="center"><br></div>
+
+<p>For a single training example (x,y), we define the cost function to be:  </p>
+<p>$$ J(w,b;x,y)=\frac{1}{2}\sum_{j=1}^l(\hat{y_j} - y_j)^2 $$</p>
+<ul>
+<li>$w^{(l)} =$ matrix of weights controlling function. Mapping from layer l to layer l+1.</li>
+<li>$a_i^{(j)} = g(z^{(l)}$(add $a_0^{(l)}$) “activation” of unit i in layer j.</li>
+<li>$z^{(l)} = {w^{(l-1)}}^Ta^{(l-1)}$  </li>
+</ul>
+<h4 id="Step-1-Forward-Propagation"><a href="#Step-1-Forward-Propagation" class="headerlink" title="Step 1: Forward Propagation"></a>Step 1: Forward Propagation</h4><p>In first step, we need initialize all $w^{(l)}$ as well as calculate all $a^{(l)}$ and $z^{(l)}$ with initialized $w^{(l)}$.</p>
+<p>$$a^{(1)} = x$$<br>$$z^{(2)} = w^{(1)}a^{(1)}$$<br>$$a^{(2)} = g(z^{(2)})(add \quad a_0^{(2)})$$<br>$$z^{(3)} = w^{(2)}a^{(2)}$$<br>$$a^{(3)} = g(z^{(3)})(add \quad a_0^{(3)})$$<br>$$z^{(4)} = w^{(3)}a^{(3)}$$<br>$$a^{(4)} = \hat{y_j} = g(z^{(4)})$$  </p>
+<h4 id="Step-2-BackPropagation-Algorithm"><a href="#Step-2-BackPropagation-Algorithm" class="headerlink" title="Step 2: BackPropagation Algorithm"></a>Step 2: BackPropagation Algorithm</h4><p>Second step, the main idea is gradient descent algorithm. Gradient of every parameter should be calculated and updated as follow:  </p>
+<p>$$ w_{ij}^{(l)} = w_{ij}^{(l)} - \alpha \frac{\partial J(w,b)}{\partial w_{ij}^{(l)}} $$<br>$$ b_i^{(l)} = b_i^{(l)} - \alpha \frac{\partial J(w,b)}{\partial b_i^{(l)}} $$  </p>
+<p>Then the point turns to gradient. How can we calculate every gradient.<br>For each output unit (e.g., layer 4 in picture)  </p>
+<div align="center"><br><img src="http://i2.piimg.com/4851/5408371bfce9cf08.png" width="479" height="140" align="center"><br></div>  
+
+<p>For each inner unit (e.g., layer 3 in picture)  </p>
+<div align="center"><br><img src="http://i1.piimg.com/4851/6c9ad3590f187a4e.png" width="600" height="423" align="center"><br></div>  
+
+<p>$\delta$ is also known as <a href="http://deeplearning.stanford.edu/wiki/index.php/Backpropagation_Algorithm" target="_blank" rel="external">error term</a>. For each gradient, it is more convenient to calculate $\delta$ first.   </p>
+<p>So we can summarize all process as follows:  </p>
+<div align="center"><br><img src="http://i4.piimg.com/4851/470d1e868ae8080e.png" width="656" height="330" align="center"><br></div>
+
+<p>There is a  <a href="https://github.com/xuewenyuan/NerualNetworks/blob/master/Multilayer_perceptron_Tensorflow.ipynb" target="_blank" rel="external">demo</a> to realize multilayer perceptron using TensorFlow. Following is a visualization for multilayer perceptron. You can run it <a href="http://playground.tensorflow.org/#activation=tanh&amp;batchSize=10&amp;dataset=circle&amp;regDataset=reg-plane&amp;learningRate=0.03&amp;regularizationRate=0&amp;noise=0&amp;networkShape=4,2&amp;seed=0.33003&amp;showTestData=false&amp;discretize=false&amp;percTrainData=50&amp;x=true&amp;y=true&amp;xTimesY=false&amp;xSquared=false&amp;ySquared=false&amp;cosX=false&amp;sinX=false&amp;cosY=false&amp;sinY=false&amp;collectStats=false&amp;problem=classification&amp;initZero=false" target="_blank" rel="external">here</a>.  </p>
+<embed src="http://player.youku.com/player.php/sid/XMTY0MzM1MDI4OA==/v.swf" allowfullscreen="true" quality="high" width="480" height="400" align="middle" allowscriptaccess="always" type="application/x-shockwave-flash">  
+
+<hr>
+</div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a data-url="http://xuewenyuan.github.io/2016/07/14/Neural-Networks-1/" data-id="cj4jduqdy0005rh01u4xvf2ww" class="article-share-link">分享</a><div class="tags"><a href="/tags/Neural-Networks/">Neural Networks</a><a href="/tags/Perceptron/">Perceptron</a><a href="/tags/Multilayer-Perceptron/">Multilayer Perceptron</a><a href="/tags/BackPropagation/">BackPropagation</a></div><div class="post-nav"><a href="/2016/08/19/Paragraph-text-segmentation-into-lines-with-Recurrent-Neural-Networks-阅读笔记/" class="pre">Paragraph text segmentation into lines with Recurrent Neural  Networks（阅读笔记）</a><a href="/2016/05/27/How-To-Understand-Gabor-Filter/" class="next">如何理解Gabor滤波器</a></div><div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div><script>var cloudTieConfig = {
+  url: document.location.href,
+  productKey: "true",
+  target: "cloud-tie-wrapper"
+};</script><script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" target="_blank" class="search-form"><input type="search" name="word" maxlength="20" placeholder="Search"/><input type="hidden" name="si" value="http://xuewenyuan.github.io"/><input name="tn" type="hidden" value="bds"/><input name="cl" type="hidden" value="3"/><input name="ct" type="hidden" value="2097152"/><input name="s" type="hidden" value="on"/></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Neural-Networks/">Neural Networks</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/OCR文献阅读笔记/">OCR文献阅读笔记</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/Multilayer-Perceptron/" style="font-size: 15px;">Multilayer Perceptron</a> <a href="/tags/Deep-Learning/" style="font-size: 15px;">Deep Learning</a> <a href="/tags/R-CNN/" style="font-size: 15px;">R-CNN</a> <a href="/tags/Gabor-Filter/" style="font-size: 15px;">Gabor Filter</a> <a href="/tags/Neural-Networks/" style="font-size: 15px;">Neural Networks</a> <a href="/tags/Perceptron/" style="font-size: 15px;">Perceptron</a> <a href="/tags/Object-Detection/" style="font-size: 15px;">Object Detection</a> <a href="/tags/BackPropagation/" style="font-size: 15px;">BackPropagation</a> <a href="/tags/文本分割/" style="font-size: 15px;">文本分割</a> <a href="/tags/LSTM/" style="font-size: 15px;">LSTM</a> <a href="/tags/CTC/" style="font-size: 15px;">CTC</a> <a href="/tags/LaTex/" style="font-size: 15px;">LaTex</a> <a href="/tags/环境配置/" style="font-size: 15px;">环境配置</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/11/21/DeepLearning4ObjectDetection/">Deep Learning for Object Detection</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/20/TexLive+Atom/">TexLive + Atom,教你配置炫酷的LaTex编译环境</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/19/Paragraph-text-segmentation-into-lines-with-Recurrent-Neural-Networks-阅读笔记/">Paragraph text segmentation into lines with Recurrent Neural  Networks（阅读笔记）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/14/Neural-Networks-1/">Neural Networks(Part 1)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/27/How-To-Understand-Gabor-Filter/">如何理解Gabor滤波器</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/24/hello-world/">Hello World</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div><ul></ul><a href="https://yuhaomin.github.io/" title="俞浩敏" target="_blank">俞浩敏</a><ul></ul><a href="http://blog.csdn.net/jzwong" title="王建柱" target="_blank">王建柱</a><ul></ul><a href="http://blog.csdn.net/gyarenas" title="耿阳李敖" target="_blank">耿阳李敖</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2017 <a href="/." rel="nofollow">Wenyuan.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a id="rocket" href="#top" class="show"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/3.0.47/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/fancybox/3.0.47/jquery.fancybox.min.css"><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+</script><script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML" async></script><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
