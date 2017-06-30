@@ -44,7 +44,7 @@
 <p>Fast R-CNN实现了更加快速与精确的检测结果，但是整个任务仍然是分多阶段进行的，而且大部分时间都耗费在提取候选框的过程中。Faster R-CNN就是主要针对提取候选框而设计的物体检测框架</p>
 <h3 id="2-4-Faster-R-CNN"><a href="#2-4-Faster-R-CNN" class="headerlink" title="2.4 Faster R-CNN"></a>2.4 Faster R-CNN</h3><p>在上述方法中，已经通过共享卷积层、多任务的损失函数等方法实现了快速、准确的物体检测系统，但是候选框的提取仍然是耗时的一个部分，[9]就介绍了使用深度学习来提取候选框的方法，称作RPNs(Region Proposal Networks)。</p>
 <p><img src="http://ww4.sinaimg.cn/large/535663c3gw1fa15jv1gqzj20b106naam.jpg" alt="图4 RPNs结构框架"></p>
-<p>如图4所示，首先由CNN得到一张图的特征图。在特征图上使用$3 \times 3$的滑窗提取特征，每个滑动一个位置，使用全连接的方式提取一个256维的特征向量，之后将这个特征向量分别输给分类器和边框回归器(这里的分类器只实现二分类，即有物体和没有物体)。为了适应不同大小和比例的物体，我们将滑窗的中心点称为锚点，每个锚点对应3种尺度和3中长宽比的候选框，这样每个锚点也就可以在特征图上枚举到9个候选框，这样可以比$3 \times 3$的固定比例的滑窗提供更多可能的候选框。</p>
+<p>如图4所示，首先由CNN得到一张图的特征图。在特征图上使用$3 \times 3$的滑窗提取特征，每个滑动一个位置，使用全连接的方式提取一个256维的特征向量，之后将这个特征向量分别输给分类器和边框回归器(这里的分类器只实现二分类，即有物体和没有物体)。为了适应不同大小和比例的物体，我们将滑窗的中心点称为锚点，每个锚点对应原图中3种尺度和3中长宽比的候选框，这样每个锚点也就可以在原图图上枚举到9个候选框，9个候选框对应的特征皆是上述特征图上$3 \times 3$的滑窗位置。</p>
 <p><img src="http://ww1.sinaimg.cn/large/535663c3gw1fa15kg4e09j20b80aw3z7.jpg" alt="图5 Faster R-CNN结构框架"></p>
 <p>Faster R-CNN的训练分为如下几个步骤。首先使用ImageNet的数据对RPNs进行预训练，并对候选框提取部分进行微调。之后使用上一阶段中RPNs推荐的候选框训练Fast R-CNN。然后再用训练好的候选框重新初始化RPNs，此时保持卷积层不变。最后，固定卷积层微调Fast R-CNN的全连接层。  </p>
 <p>Faster R-CNN通过重新设计候选框提取从而增加的检测的速度，并且真正实现了端到端的解决方法，但是预先获取候选框，计算量仍然较大，Fast R-CNN还是达不到实时的检测。</p>
@@ -73,8 +73,8 @@
 <p>[10] Redmon, J., Divvala, S., Girshick, R., Farhadi, A.: You only look once: Unified, real-time object detection. In: CVPR. (2016)  </p>
 <p>[11] Liu W, Anguelov D, Erhan D, et al. SSD: Single Shot MultiBox Detector[J]. arXiv preprint arXiv:1512.02325, 2015.</p>
 <hr>
-<p><strong>如有任何相关问题欢迎评论或者邮件讨论<a href="&#x6d;&#x61;&#105;&#x6c;&#116;&#x6f;&#x3a;&#49;&#x35;&#x31;&#50;&#48;&#52;&#x35;&#50;&#x40;&#x62;&#106;&#x74;&#x75;&#46;&#x65;&#100;&#117;&#x2e;&#x63;&#x6e;">&#49;&#x35;&#x31;&#50;&#48;&#52;&#x35;&#50;&#x40;&#x62;&#106;&#x74;&#x75;&#46;&#x65;&#100;&#117;&#x2e;&#x63;&#x6e;</a></strong></p>
-</div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a data-url="http://xuewenyuan.github.io/2016/11/21/DeepLearning4ObjectDetection/" data-id="cj4jf5sk50000ux01lz52omih" class="article-share-link">分享</a><div class="tags"><a href="/tags/Deep-Learning/">Deep Learning</a><a href="/tags/Object-Detection/">Object Detection</a><a href="/tags/R-CNN/">R-CNN</a></div><div class="post-nav"><a href="/2016/10/20/TexLive+Atom/" class="next">TexLive + Atom,教你配置炫酷的LaTex编译环境</a></div><div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div><script>var cloudTieConfig = {
+<p><strong>如有任何相关问题欢迎评论或者邮件讨论<a href="&#x6d;&#97;&#105;&#x6c;&#116;&#111;&#58;&#x31;&#x35;&#49;&#x32;&#x30;&#x34;&#53;&#x32;&#64;&#x62;&#106;&#x74;&#x75;&#46;&#x65;&#100;&#117;&#x2e;&#x63;&#110;">&#x31;&#x35;&#49;&#x32;&#x30;&#x34;&#53;&#x32;&#64;&#x62;&#106;&#x74;&#x75;&#46;&#x65;&#100;&#117;&#x2e;&#x63;&#110;</a></strong></p>
+</div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a data-url="http://xuewenyuan.github.io/2016/11/21/DeepLearning4ObjectDetection/" data-id="cj4jftgbe0000y401v71zpbl4" class="article-share-link">分享</a><div class="tags"><a href="/tags/Deep-Learning/">Deep Learning</a><a href="/tags/Object-Detection/">Object Detection</a><a href="/tags/R-CNN/">R-CNN</a></div><div class="post-nav"><a href="/2016/10/20/TexLive+Atom/" class="next">TexLive + Atom,教你配置炫酷的LaTex编译环境</a></div><div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div><script>var cloudTieConfig = {
   url: document.location.href,
   productKey: "true",
   target: "cloud-tie-wrapper"
