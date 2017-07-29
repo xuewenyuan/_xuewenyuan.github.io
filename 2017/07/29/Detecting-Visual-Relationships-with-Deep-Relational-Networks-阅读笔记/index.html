@@ -31,7 +31,11 @@
 <p>$$<br>q_r={\sigma}(W_rX_r+W_{rs}1_s+W_{ro}1_o)<br>$$</p>
 <p>这里，$\sigma$表示softmax函数。$1_s$和$1_s$分别表示s和r的one-hot指示向量。因此整个问题如下的优化问题：</p>
 <p>$$<br>\max_{q}E_q[{\psi}_r(r|X_r;W_r) \\<br>+{\varphi}_{rs}(r, s|W_{rs})+{\varphi}_{ro}(r,o|W_{ro})]+H_q(q)<br>$$</p>
-<h2 id="Experiments"><a href="#Experiments" class="headerlink" title="Experiments"></a>Experiments</h2><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2></div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a data-url="http://xuewenyuan.github.io/2017/07/29/Detecting-Visual-Relationships-with-Deep-Relational-Networks-阅读笔记/" data-id="cj5p9jco50005t2014ecwsuli" class="article-share-link">分享</a><div class="tags"><a href="/tags/目标检测/">目标检测</a><a href="/tags/视觉关系/">视觉关系</a><a href="/tags/深度相关网络/">深度相关网络</a></div><div class="post-nav"><a href="/2017/06/30/Deep-Forest-Towards-an-Alternative-to-Deep-Neural-Networks-阅读笔记/" class="next">Deep Forest: Towards an Alternative to Deep Neural Networks (阅读笔记)</a></div><div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div><script>var cloudTieConfig = {
+<p>如果s和o是不确定的，并且以概率向量$q_s$和$q_o$来表示，则：</p>
+<p>$$<br>q_r={\sigma}(W_rX_r+W_{rs}q_s+W_{ro}q_o)<br>$$</p>
+<p>同理，这个推理公式可以用到s和o上来，因此，我们就可以得到如下更新公式：</p>
+<p>$$<br>q^{‘}_s={\sigma}(W_aX_s+W_{sr}q_r+W_{so}q_o)<br>q^{‘}_r={\sigma}(W_rX_r+W_{rs}q_s+W_{ro}q_o)<br>q^{‘}_o={\sigma}(W_aX_o+W_{os}q_s+W_{or}q_r)<br>$$</p>
+<h2 id="Experiments"><a href="#Experiments" class="headerlink" title="Experiments"></a>Experiments</h2><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2></div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a data-url="http://xuewenyuan.github.io/2017/07/29/Detecting-Visual-Relationships-with-Deep-Relational-Networks-阅读笔记/" data-id="cj5p9ry7s0005tm011dbgu5w2" class="article-share-link">分享</a><div class="tags"><a href="/tags/目标检测/">目标检测</a><a href="/tags/视觉关系/">视觉关系</a><a href="/tags/深度相关网络/">深度相关网络</a></div><div class="post-nav"><a href="/2017/06/30/Deep-Forest-Towards-an-Alternative-to-Deep-Neural-Networks-阅读笔记/" class="next">Deep Forest: Towards an Alternative to Deep Neural Networks (阅读笔记)</a></div><div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div><script>var cloudTieConfig = {
   url: document.location.href,
   productKey: "true",
   target: "cloud-tie-wrapper"
