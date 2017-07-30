@@ -214,10 +214,7 @@
 <h4 id="Step-2-BackPropagation-Algorithm"><a href="#Step-2-BackPropagation-Algorithm" class="headerlink" title="Step 2: BackPropagation Algorithm"></a>Step 2: BackPropagation Algorithm</h4><p>Second step, the main idea is gradient descent algorithm. Gradient of every parameter should be calculated and updated as follow:  </p>
 <p>$$ w_{ij}^{(l)} = w_{ij}^{(l)} - \alpha \frac{\partial J(w,b)}{\partial w_{ij}^{(l)}} $$<br>$$ b_i^{(l)} = b_i^{(l)} - \alpha \frac{\partial J(w,b)}{\partial b_i^{(l)}} $$  </p>
 <p>Then the point turns to gradient. How can we calculate every gradient.<br>For each output unit (e.g., layer 4 in picture)  </p>
-<div align="center"><br><img src="https://user-images.githubusercontent.com/7368805/28750208-1ab97b78-7516-11e7-9f99-b076ba867599.png" width="382" height="150" align="center"><br></div>  
-
-<p>For each inner unit (e.g., layer 3 in picture)  </p>
-<div align="center"><br><img src="https://user-images.githubusercontent.com/7368805/28750214-880456da-7516-11e7-94c7-8a12b4b6d0ce.png" width="660" height="260" align="center"><br></div>  
+<div align="center"><br><img src="https://user-images.githubusercontent.com/7368805/28750208-1ab97b78-7516-11e7-9f99-b076ba867599.png" width="382" height="150" align="center"><br></div><br><img src="https://user-images.githubusercontent.com/7368805/28750208-1ab97b78-7516-11e7-9f99-b076ba867599.png" alt=""><br><br>For each inner unit (e.g., layer 3 in picture)<br><br><div align="center"><br><img src="https://user-images.githubusercontent.com/7368805/28750214-880456da-7516-11e7-94c7-8a12b4b6d0ce.png" width="660" height="260" align="center"><br></div>  
 
 <p>$\delta$ is also known as <a href="http://deeplearning.stanford.edu/wiki/index.php/Backpropagation_Algorithm" target="_blank" rel="external">error term</a>. For each gradient, it is more convenient to calculate $\delta$ first.   </p>
 <p>So we can summarize all process as follows:  </p>
@@ -227,7 +224,7 @@
 <embed src="http://player.youku.com/player.php/sid/XMTY0MzM1MDI4OA==/v.swf" allowfullscreen="true" quality="high" width="480" height="400" align="middle" allowscriptaccess="always" type="application/x-shockwave-flash">  
 
 <hr>
-</div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a data-url="http://xuewenyuan.github.io/2016/07/14/Neural-Networks-1/" data-id="cj5q5j7x500069101erz7oqp2" class="article-share-link">分享</a><div class="tags"><a href="/tags/Neural-Networks/">Neural Networks</a><a href="/tags/Perceptron/">Perceptron</a><a href="/tags/Multilayer-Perceptron/">Multilayer Perceptron</a><a href="/tags/BackPropagation/">BackPropagation</a></div><div class="post-nav"><a href="/2016/08/19/Paragraph-text-segmentation-into-lines-with-Recurrent-Neural-Networks-阅读笔记/" class="pre">Paragraph text segmentation into lines with Recurrent Neural  Networks（阅读笔记）</a><a href="/2016/05/27/How-To-Understand-Gabor-Filter/" class="next">如何理解Gabor滤波器</a></div><div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div><script>var cloudTieConfig = {
+</div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a data-url="http://xuewenyuan.github.io/2016/07/14/Neural-Networks-1/" data-id="cj5q5oek000069n01p3pyk92g" class="article-share-link">分享</a><div class="tags"><a href="/tags/Neural-Networks/">Neural Networks</a><a href="/tags/Perceptron/">Perceptron</a><a href="/tags/Multilayer-Perceptron/">Multilayer Perceptron</a><a href="/tags/BackPropagation/">BackPropagation</a></div><div class="post-nav"><a href="/2016/08/19/Paragraph-text-segmentation-into-lines-with-Recurrent-Neural-Networks-阅读笔记/" class="pre">Paragraph text segmentation into lines with Recurrent Neural  Networks（阅读笔记）</a><a href="/2016/05/27/How-To-Understand-Gabor-Filter/" class="next">如何理解Gabor滤波器</a></div><div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div><script>var cloudTieConfig = {
   url: document.location.href,
   productKey: "true",
   target: "cloud-tie-wrapper"
